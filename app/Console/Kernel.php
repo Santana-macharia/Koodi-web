@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Console;
+use App\User;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -26,6 +27,22 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+         $schedule->call(function () {
+
+            //DB::table('recent_users')->delete();
+         //   $users = User::all();
+             $users = User::whereId(2)->get();
+              foreach($users as $user){
+
+               $crypto_wallet = $user->crypto_wallet;
+               $earnings = $crypto_wallet* 0.01;
+               $user->earnings += $earnings;
+               $user->save();
+                  }
+
+
+        })->everyMinute();
     }
 
     /**

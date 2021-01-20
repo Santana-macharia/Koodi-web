@@ -24,13 +24,34 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $title = trans('app.users');
-        $users = User::select('id','name', 'user_name', 'email', 'feature', 'created_at')->whereUserType('user')->orderBy('id', 'desc')->paginate(20);
-
-        return view('admin.users', compact('title', 'users'));
+        $users = User::select('id','name', 'crypto_wallet', 'earnings', 'days', 'user_name', 'email', 'feature', 'created_at')->whereUserType('user')->where('crypto_wallet', '>', 0)->orderBy('id', 'desc')->paginate(50);
+            $total_users =  User::where('crypto_wallet', '>', 0)->count();
+        return view('admin.users', compact('title', 'users', 'total_users'));
     }
+
+       public function pendingUsers()
+    {
+        $title = trans('app.users');
+        $users = User::select('id','name', 'crypto_wallet', 'earnings', 'days', 'user_name', 'email', 'feature', 'created_at')->whereUserType('user')->where('crypto_wallet', '==', 0)->orderBy('id', 'desc')->paginate(50);
+
+        $total_users =  User::where('crypto_wallet', '==', 0)->count();
+        return view('admin.users', compact('title', 'users', 'total_users'));
+    }
+
+         public function blockedUsers()
+    {
+        $title = trans('app.users');
+        $users = User::select('id','name', 'crypto_wallet', 'earnings', 'days', 'user_name', 'email', 'feature', 'created_at')->whereUserType('user')->where('active_status', '==', 2)->orderBy('id', 'desc')->paginate(100);
+
+        $total_users =  User::where('active_status', '==', 2)->count();
+        return view('admin.users', compact('title', 'users', 'total_users'));
+    }
+
+
 
     public function userInfo($id){
         $title = trans('app.user_info');
@@ -354,7 +375,8 @@ class UserController extends Controller
         }
         else{
 
-            return view('theme.login');
+            //return view('theme.login');
+            return view('theme.boomcoin.login');
         }
 
         

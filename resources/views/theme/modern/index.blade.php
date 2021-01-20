@@ -1,3 +1,10 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 @extends('layout.main')
 
 @section('main')
@@ -11,8 +18,12 @@
 
                         <div class="modern-home-search-bar-wrap">
                             <div class="search-wrapper">
-     <h3>PESSACOIN IS A PLATFORM FOR THE NEXT GENERATION OF INVESTORS THAT WILL SUPPORT FUNDING BINARY ACCOUNTS
+     <h3>BOOMCOIN IS A PLATFORM FOR THE NEXT GENERATION OF INVESTORS
  </h3>  
+
+ <marquee width="100%" direction="left" height="100px" style="color:#ffffff;font-size:20px">
+ Create Account,  Buy Boomtokens,  Exchange Boomtokens
+</marquee>
 
                             
                                 <a href="{{ route('buy') }}" class="btn btn-info btn-lg"><i class="fa fa-search-plus"></i> Get started</a>
@@ -45,11 +56,11 @@
     <h3 style="text-align:left;font-weight:bold;color:black" >51CAPITAL PESSACOIN</h3>
     
 <ul style="color:black; display:inline-block;font-size:16px;list-style-type:disc">
-<li>100 PessaToken will be equivalent of 1 pessacoin</li>
-<li>PessaToken will work to the advantage of stakeholders.</li>
-<li>PessaToken will support funding Binary accounts.</li>
-<li>PessaToken will be affordable with benchmark rate of $0.5 per Token.</li>
-<li>PessaToken will be friendly among other platform, Mpesa.</li>
+<li>100 BoomToken will be equivalent to 1 boomcoin.</li>
+<li>BoomToken will work to the advantage of stakeholders.</li>
+<li>BoomToken will support funding Binary accounts.</li>
+<li>BoomToken will be affordable with a benchmark rate of $0.5 per Token.</li>
+<li>BoomToken will be friendly among other platforms; Mpesa.</li>
 </p>
 <ul><a href="" class="btn btn-info btn-lg" style="margin-top:20px">DISCOVER MORE</a></ul>
 </ul>
@@ -62,8 +73,8 @@
 
 <section class="av_textblock_section " itemscope="itemscope" itemtype="https://schema.org/CreativeWork">
 <div class="avia_textblock  av_inherit_color " style="color:#ffffff; " itemprop="text"><br>
-<strong><h2 style="text-align: center;">WHY ONE NEEDS TO TRADE WITH PESSACOIN</h2></strong>
-<h4 style="text-align: center;">There are endless reasons to secure PessaCoins but in a nutshell, everyone seeks:</h4>
+<strong><h2 style="text-align: center;">WHY ONE NEEDS TO TRADE WITH BOOMCOIN</h2></strong>
+<h4 style="text-align: center;">There are endless reasons to secure BoomCoins but in a nutshell, everyone seeks:</h4>
 <br>
 </div></section>
 
@@ -92,15 +103,15 @@
 <div class="row">
   <div class="column" style="background-color:#000000;color:black;font-size:14px;text-align:center;color:#ffffff">
     <h4>AFFORDABILITY</h4>
-    <p>The Coins can be bought at the least benchmark rate, which is $0.5 per token. 100 token will be equivalent to 1 PessaCoin. cheaper than the ever-changing Bitcoin rate that has been in use all along for Binary.</p>
+    <p>The Coins can be bought at the least benchmark rate, which is $0.5 per token. 100 token will be equivalent to 1 BoomCoin, cheaper than the ever-changing Bitcoin rate that has been in use all along for Binary.</p>
   </div>
   <div class="column" style="background-color:#000000;color:black;font-size:14px;text-align:center;color:#ffffff">
     <h4>PROFITABILITY</h4>
-    <p>Pesacoin trading will be like any other crypto trading. Exchange rates will be available online and one can monitor pricing and trade accordigly. This market will be totally depending on demand and supply basis.</p>
+    <p>Boomcoin trading will be like any other crypto trading. Exchange rates will be available online and one can monitor pricing and trade accordigly. This market will be totally depending on demand and supply basis.</p>
   </div>
   <div class="column" style="background-color:#000000;color:black;font-size:14px;text-align:center;color:#ffffff">
     <h4>EFFICIENCY</h4>
-    <p>The PesaCoin is efficient in that it can trade with all other currencies from Ksh, $, Bitcoin and Ethereum to list but a few.</p>
+    <p>The BoomCoin is efficient in that it can trade with all other currencies from Ksh, $, Bitcoin and Ethereum to list but a few.</p>
   </div>
 </div>
 <!-- end div -->
@@ -110,7 +121,7 @@
 
 <div class="container" >
 <div class="avia_textblock  " style="font-size:18px;color:black;margin-bottom:30px" itemprop="text"><h2 style="text-align: center">How to Get Started</h2>
-<p style="text-align: center;color:black">The trade process from the creation of the user account to having pessacoins in your wallet takes only a few minutes.</p>
+<p style="text-align: center;color:black">The trade process from the creation of the user account to having boomcoins in your wallet takes only a few minutes.</p>
 </div>
 
 <!-- How to get started div -->
@@ -138,17 +149,17 @@
 </style>
 
 <div class="row" style="margin-top:-2px">
-  <div class="column" style="background-color:#ffffff;color:#775300;font-size:15px;text-align:center">
+  <div class="column" style="background-color:#ffffff;color:#b8860b;font-size:15px;text-align:center">
   
     <h3>Create Account</h3>
-    <p style="color:black"> Register to 51capitalcrypto.com and  gain access to be a member</p>
+    <p style="color:black"> Register to 51capitalcrypto.com and  gain access to be a member.</p>
   </div>
-  <div class="column" style="background-color:#ffffff;color:#775300;font-size:15px;text-align:center">
-    <h3>Buy Pessatokens</h3>
-    <p style="color:black">Make deposit amount to your wallet, its simple and secure</p>
+  <div class="column" style="background-color:#ffffff;color:#b8860b;font-size:15px;text-align:center">
+    <h3>Buy Boomtokens</h3>
+    <p style="color:black">Make deposit amount to your wallet, its simple and secure.</p>
   </div>
-  <div class="column" style="background-color:#ffffff;color:#775300;font-size:15px;text-align:center">
-    <h3>Exchange Pessatokens</h3>
+  <div class="column" style="background-color:#ffffff;color:#b8860b;font-size:15px;text-align:center">
+    <h3>Exchange Boomtokens</h3>
     <p style="color:black">Earn 1% of your deposit amount each day. Exchange token to other currencies.</p>
   </div>
 </div>
@@ -157,34 +168,39 @@
 
 
 <!-- Sign in-->
-<div style="background-color:#775300">
-<div class="flex_column av_one_half  flex_column_div first  avia-builder-el-35  el_before_av_one_half  avia-builder-el-first" 
-style="border-width:1px; border-style:solid;  box-shadow: 5px 5px 5px 5px #ffffff; padding:5px; border-radius:10px;width: 550px;height:150px;display:inline-block;margin-left: 50px;margin-top: 100px;margin-bottom:100px ">
+<style>
+
+</style>
+<div style="background-color:#b8860b">
+
+<a href="{{ route('login') }}"><div class="flex_column av_one_half  flex_column_div first  avia-builder-el-35  el_before_av_one_half  avia-builder-el-first" 
+style="border-width:1px; border-style:solid;  box-shadow: 3px 3px 3px 3px #ffffff; padding:5px; border-radius:10px;width: 550px;height:150px;display:inline-block;margin-left: 70px;margin-top: 100px;margin-bottom:100px ">
 <section class="av_textblock_section " itemscope="itemscope" itemtype="https://schema.org/CreativeWork">
 <div class="avia_textblock  " style="font-size:16px;color:#ffffff " itemprop="text">
-<h2 style="text-align: center;font-size:30px">SIGN IN</h2>
+<h2 style="text-align: center;font-size:30px">SIGN IN</h2><br>
 <p style="text-align: center;font-size:19px">Access the cryptocurrency you deserve</p>
 </div></section>
 <div class="avia-button-wrap avia-button-center  avia-builder-el-37  el_after_av_textblock  avia-builder-el-last " style="text-align:center">
-<a href="{{ route('login') }}" class="avia-button   avia-icon_select-no avia-color-theme-color avia-size-large avia-position-center" style="font-size: 14px;color:#ffffff">
-<span class="avia_iconbox_title">SIGN IN</span></a></div></div>
+</a></div></div>
 
 
 
  <!-- register -->
-<div class="flex_column av_one_half  flex_column_div first  avia-builder-el-35  el_before_av_one_half  avia-builder-el-first"
-style="border-width:1px; border-style:solid;  box-shadow: 5px 5px 5px 5px #ffffff; padding:5px; border-radius:10px;width: 550px;height:150px;display:inline-block;margin-left: 130px;color:#ffffff ">
+ <a href="{{ route('user.create') }}"><div class="flex_column av_one_half  flex_column_div first  avia-builder-el-35  el_before_av_one_half  avia-builder-el-first" 
+style="border-width:1px; border-style:solid;  box-shadow: 3px 3px 3px 3px #ffffff; padding:5px; border-radius:10px;width: 550px;height:150px;display:inline-block;margin-left: 100px;margin-top: 100px;margin-bottom:100px ">
 <section class="av_textblock_section " itemscope="itemscope" itemtype="https://schema.org/CreativeWork">
-<div class="avia_textblock  " style="font-size:16px; " itemprop="text">
-<h2 style="text-align: center;font-size:30px">REGISTER</h2>
+<div class="avia_textblock  " style="font-size:16px;color:#ffffff " itemprop="text">
+<h2 style="text-align: center;font-size:30px">SIGN UP</h2><br>
 <p style="text-align: center;font-size:19px">Join the new era of cryptocurrency exchange</p>
 </div></section>
-<div class="avia-button-wrap avia-button-center  avia-builder-el-37  el_after_av_textblock  avia-builder-el-last" style="text-align:center">
-<a href="{{ route('user.create') }}"  class="avia-button   avia-icon_select-no avia-color-theme-color avia-size-large avia-position-center" style="font-size: 14px;color:#ffffff;">
-<span class="avia_iconbox_title">SIGN UP</span></a></div></div>
+<div class="avia-button-wrap avia-button-center  avia-builder-el-37  el_after_av_textblock  avia-builder-el-last " style="text-align:center">
+</a></div></div>
+
+
 </div>
 
 @endsection
+
 
 
 @section('page-js')
@@ -224,3 +240,5 @@ style="border-width:1px; border-style:solid;  box-shadow: 5px 5px 5px 5px #fffff
         });
     </script>
 @endsection
+</body>
+</html>

@@ -11,7 +11,7 @@
       @if( ! empty($title))
       <div class="row">
         <div class="col-lg-12">
-          <h1 class="page-header"> {{ $title }}  </h1>
+          <h1 class="page-header"> Send Payments </h1>
         </div> <!-- /.col-lg-12 -->
       </div> <!-- /.row -->
       @endif
@@ -25,7 +25,7 @@
 
               <div class="panel panel-default">
                 <div class="panel-heading">
-                  <h4 class="panel-title">You are about to buy PessaCoin, confirm your order</h4>
+                  <h4 class="panel-title">You are about to send amount, confirm your order</h4>
                 </div>
                 <div class="panel-body">
                   <div class="col-md-9">
@@ -53,21 +53,13 @@
                   @if($payment->payment_method == 'mpesa')
                   <div class="job-edit-pro">
                    <ul style="list-style-type:none;">
-                    <li>Step 1: Go to M-Pesa and select the ‘Pay Bill’ Option.</li>
-                    <li>Step 2: Enter Mpesa Pay Bill Number 7004301 and press “OK”</li>
-                    <li>Step 3: Enter account number <strong>Pessacoin</strong></li>
-                    <li>Step 4: Enter amount <strong>{{ $currency.' '.$amount }}</strong> and Press ‘OK’.</li>
-                    <li>Step 5: Enter your M-Pesa PIN and Press ‘OK’.</li>
+                    <li>Client Name:  <strong>{{ $payment->ad->seller_name }}</strong></li>
+                    <li>Client Phone: <strong>{{ $payment->ad->seller_phone }}</strong></li>
+                    <li>Sending Amount : <strong>{{ $currency.' '.$amount }}</strong></li>
+                  
                   </ul> 
 
-                <div class="row">
-                   <div class="form-group" style="padding: 10px;">
-                    <hr>
-                    <label for="inputName" class="col-sm-12 control-label">For payments confirmation contact: <strong>+254 703 622 390</strong> </label>
-                     
-                  </div>
-                </div>
-
+       
 
                   <div class="row">
                    <div class="form-group" style="padding: 10px;">

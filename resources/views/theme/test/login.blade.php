@@ -76,7 +76,7 @@
                         <div class="col-xs-12">
                             <div class="col-xs-12 col-sm-4">
                                 <label class="checkbox">
-                                    <input type="checkbox" value="remember-me">Remember 
+                                    <input type="checkbox" value="remember-me">Remember Me
                                 </label>
                             </div>
                               <div class="col-xs-12 col-sm-4">

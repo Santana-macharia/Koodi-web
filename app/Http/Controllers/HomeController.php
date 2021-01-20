@@ -28,8 +28,15 @@ class HomeController extends Controller
         
         $posts = Post::whereType('post')->with('feature_img', 'author')->whereStatus('1')->limit(get_option('blog_post_amount_in_homepage'))->get();
 
-        return view($this->theme.'index', compact( 'premium_ads', 'regular_ads','urgent_ads', 'countries', 'sliders', 'posts'));
-        //return view('theme.awasam.index');
+        //return view($this->theme.'index', compact( 'premium_ads', 'regular_ads','urgent_ads', 'countries', 'sliders', 'posts'));
+        return view('theme.boomcoin.index');
+    }
+
+       public function beatcoin(){
+       
+
+        // return view('theme.modern.beatcoin', compact( 'premium_ads', 'regular_ads','urgent_ads', 'countries', 'sliders', 'posts'));
+        return view('theme.modern.beatcoin');
     }
 
      public function buyBitcoins(){

@@ -16,8 +16,16 @@
                 <!-- /.nav-second-level -->
             </li>
 
-            <li>
-                <a href="{{ route('pending_exchanges') }}"><i class="fa fa-dashboard fa-fw"></i> Exchange</a>
+           
+
+              <li>
+                <a href="#"><i class="fa fa-bullhorn"></i> My Exchange<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    
+                    <li> <a href="{{ route('exchange') }}"> Exchange Earnings</a> </li>
+                    <li> <a href="{{ route('pending_exchanges') }}">Pending Exchange</a> </li>
+                    <li> <a href="#"> Closed Earnings</a> </li>
+                </ul>
             </li>
 
            <!--  <li>
@@ -32,29 +40,38 @@
  -->
             @if($lUser->is_admin())
 
-            <li> <a href="{{ route('parent_categories') }}"><i class="fa fa-list"></i> @lang('app.categories')</a>  </li>
-            <li> <a href="{{ route('admin_brands') }}"><i class="fa fa-adjust"></i> @lang('app.brands')</a>  </li>
+    <!--         <li> <a href="{{ route('parent_categories') }}"><i class="fa fa-list"></i> @lang('app.categories')</a>  </li>
+            <li> <a href="{{ route('admin_brands') }}"><i class="fa fa-adjust"></i> @lang('app.brands')</a>  </li> -->
+            
             <li>
                 <a href="#"><i class="fa fa-bullhorn"></i> @lang('app.ads')<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>  <a href="{{ route('approved_ads') }}">@lang('app.approved_ads')</a> </li>
-                    <li>  <a href="{{ route('admin_pending_ads') }}">@lang('app.pending_for_approval')</a> </li>
-                    <li>  <a href="{{ route('admin_blocked_ads') }}">@lang('app.blocked_ads')</a> </li>
+             <!--        <li>  <a href="{{ route('admin_pending_ads') }}">@lang('app.pending_for_approval')</a> </li> -->
+                    <li>  <a href="{{ route('admin_blocked_ads') }}">Closed Earnings</a> </li>
                 </ul>
             </li>
 
-            <li>
+       <!--      <li>
                 <a href="#"><i class="fa fa-rss-square"></i> @lang('app.blog')<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>  <a href="{{ route('posts') }}">@lang('app.posts')</a> </li>
                     <li>  <a href="{{ route('create_new_post') }}">@lang('app.create_new_post')</a> </li>
                 </ul>
+            </li> -->
+
+      <!--       <li> <a href="{{ route('pages') }}"><i class="fa fa-file-word-o"></i> @lang('app.pages')</a>  </li>
+            <li> <a href="{{ route('ad_reports') }}"><i class="fa fa-exclamation"></i> @lang('app.ad_reports')</a>  </li> -->
+            <li>
+                <a href="#"><i class="fa fa-users"></i> @lang('app.users')<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>  <a href="{{ route('users') }}">Active Accounts</a> </li>
+             <!--        <li>  <a href="{{ route('admin_pending_ads') }}">@lang('app.pending_for_approval')</a> </li> -->
+                    <li>  <a href="{{ route('pending-users') }}">Pending Accounts</a> </li>
+                    <li>  <a href="{{ route('blocked-users') }}">Blocked Accounts</a> </li>
+                </ul>
             </li>
-
-            <li> <a href="{{ route('pages') }}"><i class="fa fa-file-word-o"></i> @lang('app.pages')</a>  </li>
-            <li> <a href="{{ route('ad_reports') }}"><i class="fa fa-exclamation"></i> @lang('app.ad_reports')</a>  </li>
-            <li> <a href="{{ route('users') }}"><i class="fa fa-users"></i> @lang('app.users')</a>  </li>
-
+<!-- 
             <li>
                 <a href="#"><i class="fa fa-desktop fa-fw"></i> @lang('app.appearance')<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -62,23 +79,24 @@
                     <li> <a href="{{ route('modern_theme_settings') }}">@lang('app.modern_theme_settings')</a> </li>
                     <li> <a href="{{ route('social_url_settings') }}">@lang('app.social_url')</a> </li>
                 </ul>
-                <!-- /.nav-second-level -->
-            </li>
+          
+            </li> -->
 
-            <li>
+      <!--       <li>
                 <a href="#"><i class="fa fa-map-marker"></i> @lang('app.locations')<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li> <a href="{{ route('country_list') }}">@lang('app.countries')</a> </li>
                     <li> <a href="{{ route('state_list') }}">@lang('app.states')</a> </li>
                     <li> <a href="{{ route('city_list') }}">@lang('app.cities')</a> </li>
                 </ul>
-                <!-- /.nav-second-level -->
-            </li>
+   
+            </li> -->
 
-            <li> <a href="{{ route('contact_messages') }}"><i class="fa fa-envelope-o"></i> @lang('app.contact_messages')</a>  </li>
+          <!--   <li> <a href="{{ route('contact_messages') }}"><i class="fa fa-envelope-o"></i> @lang('app.contact_messages')</a>  </li>
             <li> <a href="{{ route('monetization') }}"><i class="fa fa-dollar"></i> @lang('app.monetization')</a>  </li>
-
-            <li>
+ -->
+  <li> <a href="{{ route('ad_settings') }}"><i class="fa fa-wrench fa-fw"></i> @lang('app.ad_settings_and_pricing')</a> </li>
+         <!--    <li>
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> @lang('app.settings')<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li> <a href="{{ route('general_settings') }}">@lang('app.general_settings')</a> </li>
@@ -90,10 +108,10 @@
                     <li> <a href="{{ route('blog_settings') }}">@lang('app.blog_settings')</a> </li>
                     <li> <a href="{{ route('other_settings') }}">@lang('app.other_settings')</a> </li>
                 </ul>
-                <!-- /.nav-second-level -->
-            </li>
+            
+            </li> -->
 
-                <li> <a href="{{ route('administrators') }}"><i class="fa fa-users"></i> @lang('app.administrators')</a>  </li>
+              <!--   <li> <a href="{{ route('administrators') }}"><i class="fa fa-users"></i> @lang('app.administrators')</a>  </li> -->
 
 
             @endif

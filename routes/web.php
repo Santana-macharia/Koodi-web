@@ -13,6 +13,7 @@
 
 
 Route::get('/', ['as' => 'home', 'uses'=>'HomeController@index']);
+Route::get('beatcoin', ['as' => 'beatcoin', 'uses'=>'HomeController@beatcoin']);
 Route::get('clear', 'HomeController@clearCache')->name('clear_cache');
 Route::get('buy-bitcoins', 'HomeController@buyBitcoins')->name('buy-bitcoins');
 Route::get('sell-bitcoins', 'HomeController@sellBitcoins')->name('sell-bitcoins');
@@ -24,6 +25,7 @@ Route::get('contact-us', ['as' => 'contact_us_page', 'uses'=>'HomeController@con
 Route::post('contact-us', ['uses'=>'HomeController@contactUsPost']);
 
 Route::get('page/{slug}', ['as' => 'single_page', 'uses'=>'PostController@showPage']);
+Route::get('single', ['as' => 'singlepage', 'uses'=>'PostController@termsConditions']);
 
 Route::get('blog', ['as' => 'blog', 'uses'=>'PostController@blogIndex']);
 Route::get('blog/{slug}', ['as' => 'blog_single', 'uses'=>'PostController@blogSingle']);
@@ -170,6 +172,7 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::post('edit/{slug}', ['uses' => 'PostController@updatePage']);
         });
 
+
         Route::group(['prefix'=>'slider'], function(){
             Route::get('/', ['as'=>'slider', 'uses' => 'SliderController@index']);
             Route::get('create', ['as'=>'create_slider', 'uses' => 'SliderController@create']);
@@ -181,11 +184,13 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
 
         Route::get('approved', ['as'=>'approved_ads', 'uses' => 'AdsController@index']);
         Route::get('pending', ['as'=>'admin_pending_ads', 'uses' => 'AdsController@adminPendingAds']);
-        Route::get('blocked', ['as'=>'admin_blocked_ads', 'uses' => 'AdsController@adminBlockedAds']);
+        Route::get('closed', ['as'=>'admin_blocked_ads', 'uses' => 'AdsController@adminBlockedAds']);
         Route::post('status-change', ['as'=>'ads_status_change', 'uses' => 'AdsController@adStatusChange']);
 
         Route::get('ad-reports', ['as'=>'ad_reports', 'uses' => 'AdsController@reports']);
         Route::get('users', ['as'=>'users', 'uses' => 'UserController@index']);
+        Route::get('pending-users', ['as'=>'pending-users', 'uses' => 'UserController@pendingUsers']);
+         Route::get('blocked-users', ['as'=>'blocked-users', 'uses' => 'UserController@blockedUsers']);
         Route::get('users-info/{id}', ['as'=>'user_info', 'uses' => 'UserController@userInfo']);
         Route::get('payment-approval/{id}', ['as'=>'payment-approval', 'uses' => 'PaymentController@paymentApproval']);
         Route::post('change-user-status', ['as'=>'change_user_status', 'uses' => 'UserController@changeStatus']);
@@ -211,20 +216,24 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
     Route::get('payments-initial', ['as'=>'payments_initial', 'uses' => 'PaymentController@coinInitial']);
     Route::get('buy', ['as'=>'buy', 'uses' => 'PaymentController@wallet']);
     Route::get('wallet', ['as'=>'wallet', 'uses' => 'PaymentController@wallet']);
+    Route::get('boomwallet', ['as'=>'boomwallet', 'uses' => 'PaymentController@boomwallet']);
     Route::get('sell', ['as'=>'sell', 'uses' => 'PaymentController@sell']);
      Route::get('exchange', ['as'=>'exchange', 'uses' => 'PaymentController@exchange']);
     Route::post('deposit-amount', ['as'=>'deposit-amount', 'uses' => 'PaymentController@deposit']);
+    Route::post('update-amount', ['as'=>'update-amount', 'uses' => 'PaymentController@updateAmount']);
+     Route::post('song-amount', ['as'=>'song-amount', 'uses' => 'PaymentController@songAmount']);
     Route::post('sell-coin', ['as'=>'sell-coin', 'uses' => 'AdsController@store']);
     Route::post('exchange-coin', ['as'=>'exchange-coin', 'uses' => 'AdsController@exchange']);
     Route::get('payments-info/{trand_id}', ['as'=>'payment_info', 'uses' => 'PaymentController@paymentInfo']);
     Route::get('order', ['as' => 'order', 'uses'=>'PaymentController@proceedPayment']);
+    Route::get('send-payments', ['as' => 'send_payments', 'uses'=>'PaymentController@sendPayment']);
     //End all users access
-
 
     Route::group(['prefix'=>'u'], function(){
         Route::group(['prefix'=>'posts'], function(){
             Route::get('/', ['as'=>'my_ads', 'uses' => 'AdsController@myAds']);
-            Route::get('create', ['as'=>'create_ad', 'uses' => 'AdsController@create']);
+            Route::get('create', ['as'=>'distribution', 'uses' => 'AdsController@create']);
+            Route::post('upload_song', ['as'=>'upload_song', 'uses' => 'AdsController@uploadSong']);
             Route::post('create', ['uses' => 'AdsController@store']);
             Route::post('delete', ['as'=>'delete_ads', 'uses' => 'AdsController@destroy']);
             Route::get('edit/{id}', ['as'=>'edit_ad', 'uses' => 'AdsController@edit']);
@@ -240,10 +249,12 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::get('append-media-image', ['as'=>'append_media_image', 'uses' => 'AdsController@appendMediaImage']);
             Route::get('append-post-media-image', ['as'=>'append_post_media_image', 'uses' => 'PostController@appendPostMediaImage']);
             Route::get('pending-lists', ['as'=>'pending_ads', 'uses' => 'AdsController@pendingAds']);
+            Route::get('pending-songs', ['as'=>'pending_songs', 'uses' => 'AdsController@pendingSongs']);
             Route::get('pending-exchanges', ['as'=>'pending_exchanges', 'uses' => 'AdsController@pendingExchanges']);
             Route::get('archive-lists', ['as'=>'favourite_ad', 'uses' => 'AdsController@create']);
             //Checkout payment
             Route::get('checkout/{transaction_id}', ['as'=>'payment_checkout', 'uses' => 'PaymentController@checkout']);
+            Route::get('send-checkout/{transaction_id}', ['as'=>'send_checkout', 'uses' => 'PaymentController@checkoutSend']);
             Route::post('checkout/{transaction_id}', ['uses' => 'PaymentController@chargePayment']);
             //Payment success url
             Route::get('checkout/{transaction_id}/payment-success', ['as'=>'payment_success_url','uses' => 'PaymentController@paymentSuccess']);

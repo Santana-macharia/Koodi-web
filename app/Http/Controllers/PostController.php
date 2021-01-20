@@ -278,7 +278,12 @@ class PostController extends Controller
             return view('theme.error_404');
         }
         $title = $page->title;
-        return view('theme.single_page', compact('title', 'page'));
+       return view('theme.single_page', compact('title', 'page'));
+      
+    }
+
+    public function termsConditions(){
+        return view('theme.boomcoin.terms');
     }
 
     public function blogIndex(){

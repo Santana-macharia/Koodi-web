@@ -69,11 +69,25 @@ class AdsController extends Controller
         return view('admin.pending_ads', compact('title', 'ads'));
     }
 
-      public function pendingExchanges(){
-        $title = trans('app.my_ads');
+
+//show pending songs
+
+    public function pendingSongs(){
+        $title = 'My song lists';
 
         $user = Auth::user();
         $ads = $user->ads()->whereStatus(0)->with('city', 'country', 'state')->orderBy('id', 'desc')->paginate(20);
+
+        return view('admin.pending_song', compact('title', 'ads'));
+    }
+
+
+
+    public function pendingExchanges(){
+        $title = trans('app.my_ads');
+
+        $user = Auth::user();
+        $ads = $user->ads()->whereStatus(1)->with('city', 'country', 'state')->orderBy('id', 'desc')->paginate(20);
 
         return view('admin.pending_exchange', compact('title', 'ads'));
     }
@@ -118,50 +132,103 @@ class AdsController extends Controller
      */
 //sell coins
 
-     public function store(Request $request)
+    public function store(Request $request)
     {
 
 
         $user_id = Auth::user()->id;
         $rules = [
-          
+
             'seller_name'  => 'required',
             'seller_email'  => 'required',
             'seller_phone'  => 'required',
         ];
 
-         $this->validate($request, $rules);
+        $this->validate($request, $rules);
 
         $title = $request->seller_name;
         $slug = unique_slug($title);
-         $ad_description = 'sell PessaCoins';
+        $ad_description = 'sell PessaCoins';
 
-         $data = [
+        $data = [
             'title'         => $request->seller_name,
             'slug'          => $slug,
             'description'   =>  $ad_description,
             'price'         => $request->coin_amount,
             'payment_method' => $request ->payment_method,
-        
+            'payment_status' => $request ->payment_status,
+
 
 
             'seller_name'   => $request->seller_name,
             'seller_email'  => $request->seller_email,
             'seller_phone'  => $request->seller_phone,
+            'video_url' => $request->video_url,
             
             
             'status'        => 0,
             'user_id'       => $user_id,
         ];
 
-           $created_ad = Ad::create($data);
-    if ($created_ad){
-            
+        $created_ad = Ad::create($data);
+        if ($created_ad){
+
 
             return redirect(route('pending_ads'))->with('success', trans('app.ad_created_msg'));
 
         }
-      
+
+
+
+        //dd($request->input());
+    }
+
+
+    //upload song   
+
+    public function uploadSong(Request $request)
+    {
+
+
+        $user_id = Auth::user()->id;
+        $rules = [
+
+            'song_title'  => 'required',
+            'artist_name'  => 'required',
+        ];
+
+        $this->validate($request, $rules);
+
+        $title = $request->song_title;
+        $slug = unique_slug($title);
+        $ad_description = 'Sond upload';
+        $payment_status = 'song';
+
+        $data = [
+            'title'         => $request->song_title,
+            'slug'          => $slug,
+            'description'   =>  $ad_description,
+            'price'         => $request->coin_amount,
+            'payment_method' => $request ->payment_method,
+            'payment_status' => $request ->payment_status,
+
+
+
+            'seller_name'   => $request->artist_name,
+            
+            
+            'status'        => 0,
+            'user_id'       => $user_id,
+        ];
+
+        $created_ad = Ad::create($data);
+        if ($created_ad){
+
+
+            return redirect(route('pending_songs'))->with('success', 'You song was successfully uploaded');
+
+        }
+
 
 
         //dd($request->input());
@@ -169,31 +236,39 @@ class AdsController extends Controller
 
 
 //exchange coins
-      public function exchange(Request $request)
+    public function exchange(Request $request)
     {
 
 
         $user_id = Auth::user()->id;
         $rules = [
-          
+
             'seller_name'  => 'required',
             'seller_email'  => 'required',
             'seller_phone'  => 'required',
         ];
 
-         $this->validate($request, $rules);
+        $this->validate($request, $rules);
 
         $title = $request->seller_name;
         $slug = unique_slug($title);
-         $ad_description = 'sell PessaCoins';
+        $ad_description = 'sell PessaCoins';
 
-         $data = [
+    $duplicate = Ad::whereUserId($user_id)->whereStatus(1)->count();
+        if ($duplicate > 0){
+            return back()->with('error', 'You already have an active exchange');
+        }
+
+
+
+        $data = [
             'title'         => $request->seller_name,
             'slug'          => $slug,
             'description'   =>  $ad_description,
             'price'         => $request->coin_amount,
             'payment_method' => $request ->payment_method,
-        
+            'payment_status' => $request ->payment_status,
+
 
 
             'seller_name'   => $request->seller_name,
@@ -201,18 +276,18 @@ class AdsController extends Controller
             'seller_phone'  => $request->seller_phone,
             
             
-            'status'        => 0,
+            'status'        => 1,
             'user_id'       => $user_id,
         ];
 
-           $created_ad = Ad::create($data);
-    if ($created_ad){
-            
+        $created_ad = Ad::create($data);
+        if ($created_ad){
+
 
             return redirect(route('pending_exchanges'))->with('success', trans('submitted successfully'));
 
         }
-      
+
 
 
         //dd($request->input());
@@ -227,7 +302,7 @@ class AdsController extends Controller
 
 
         $rules = [
-          
+
             'seller_name'  => 'required',
             'seller_email'  => 'required',
             'seller_phone'  => 'required',
@@ -414,7 +489,7 @@ class AdsController extends Controller
                 return view('admin.error.error_404');
             }
         }
-     
+
 
         $rules = [
             'ad_title'  => 'required',
@@ -429,7 +504,7 @@ class AdsController extends Controller
         $title = $request->ad_title;
         //$slug = unique_slug($title);
         
-      
+
 
         $data = [
             'title'         => $request->ad_title,
@@ -438,15 +513,15 @@ class AdsController extends Controller
             'seller_name' => $request->seller_name,
             'seller_email' => $request->seller_email,
             'seller_phone' => $request->seller_phone,
-          
 
-         
+
+
 
         ];
         
         $updated_ad = $ad->update($data);
 
-      
+
 
         return redirect()->back()->with('success', trans('app.ad_updated'));
     }
@@ -536,13 +611,17 @@ class AdsController extends Controller
         $category = Category::find($sub_category->category_id);
         return $category;
     }
+    
 
     public function uploadAdsImage(Request $request){
         $user_id = Auth::user()->id;
 
         if ($request->hasFile('images')){
             $image = $request->file('images');
-            $valid_extensions = ['jpg','jpeg','png'];
+            $valid_extensions = ['mp3'];
+            // Validator::make($image, [
+            //    'file' => 'max:4000',
+            //  ]);
 
             if ( ! in_array(strtolower($image->getClientOriginalExtension()), $valid_extensions) ){
                 return ['success' => 0, 'msg' => implode(',', $valid_extensions).' '.trans('app.valid_extension_msg')];
@@ -566,7 +645,9 @@ class AdsController extends Controller
 
                 if ($is_uploaded) {
                     //Save image name into db
-                    $created_img_db = Media::create(['user_id' => $user_id, 'media_name'=>$image_name, 'type'=>'image', 'storage' => get_option('default_storage'), 'ref'=>'ad']);
+                    $created_img_db = Media::create(['user_id' => $user_id, 'media_name'=>$image_name, 'is_feature'=>'1', 'type'=>'image', 'storage' => get_option('default_storage'), 'ref'=>'ad']);
+
+                 
 
                     //upload thumb image
                     current_disk()->put($imageThumbName, $resized_thumb->__toString(), 'public');
@@ -634,7 +715,7 @@ class AdsController extends Controller
      * Listing
      */
 
-      public function listing(Request $request){
+    public function listing(Request $request){
         $ads = Ad::active();
 
         $premium_ads = Ad::activePremium();
@@ -675,14 +756,14 @@ class AdsController extends Controller
         if ($request->shortBy){
             switch ($request->shortBy){
                 case 'price_high_to_low':
-                    $ads = $ads->orderBy('price', 'desc');
-                    break;
+                $ads = $ads->orderBy('price', 'desc');
+                break;
                 case 'price_low_to_height':
-                    $ads = $ads->orderBy('price', 'asc');
-                    break;
+                $ads = $ads->orderBy('price', 'asc');
+                break;
                 case 'latest':
-                    $ads = $ads->orderBy('id', 'desc');
-                    break;
+                $ads = $ads->orderBy('id', 'desc');
+                break;
             }
         }else{
             $ads = $ads->orderBy('id', 'desc');
@@ -771,14 +852,14 @@ class AdsController extends Controller
         if ($request->shortBy){
             switch ($request->shortBy){
                 case 'price_high_to_low':
-                    $ads = $ads->orderBy('price', 'desc');
-                    break;
+                $ads = $ads->orderBy('price', 'desc');
+                break;
                 case 'price_low_to_height':
-                    $ads = $ads->orderBy('price', 'asc');
-                    break;
+                $ads = $ads->orderBy('price', 'asc');
+                break;
                 case 'latest':
-                    $ads = $ads->orderBy('id', 'desc');
-                    break;
+                $ads = $ads->orderBy('id', 'desc');
+                break;
             }
         }else{
             $ads = $ads->orderBy('id', 'desc');
@@ -826,7 +907,7 @@ class AdsController extends Controller
         return view($this->theme.'buying', compact('ads', 'title', 'countries', 'selected_categories', 'selected_sub_categories', 'selected_countries', 'selected_states', 'premium_ads', 'agents'));
     }
 
-      public function sell(Request $request){
+    public function sell(Request $request){
         $ads = Ad::active();
 
         $premium_ads = Ad::activePremium();
@@ -867,14 +948,14 @@ class AdsController extends Controller
         if ($request->shortBy){
             switch ($request->shortBy){
                 case 'price_high_to_low':
-                    $ads = $ads->orderBy('price', 'desc');
-                    break;
+                $ads = $ads->orderBy('price', 'desc');
+                break;
                 case 'price_low_to_height':
-                    $ads = $ads->orderBy('price', 'asc');
-                    break;
+                $ads = $ads->orderBy('price', 'asc');
+                break;
                 case 'latest':
-                    $ads = $ads->orderBy('id', 'desc');
-                    break;
+                $ads = $ads->orderBy('id', 'desc');
+                break;
             }
         }else{
             $ads = $ads->orderBy('id', 'desc');

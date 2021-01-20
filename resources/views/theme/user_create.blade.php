@@ -2,35 +2,35 @@
 @section('title') Register | @parent @endsection
 @section('main')
 
-    <div class="container">
-        <div class="row">
+    
+        <!-- <div class="row">
             <div class=" col-md-4 col-sm-4 col-xs-12">
                 <div class="info-box bg-white ">
                      <h4><i class="fa fa-edit"></i></h4>
-                    <h4> CHOOSE YOUR WALLET</h4>
-                    <p class="intro"> We accept Paypal, mobile money, bank transfer and others</p>
+                    <h4> CREATE ACCOUNT</h4>
+                    <p class="intro"> Register to 51capitalcrypto.com and gain access to be a member</p>
                 </div>
             </div>
 
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="info-box bg-white ">
                      <h4><i class="fa fa-paypal"></i> </h4>
-                    <h4>MAKE PAYMENT</h4>
+                    <h4>BUY BOOMTOKENS</h4>
                     <p class="intro"> Make deposit amount to your wallet, its simple and secure </p>
                 </div>
             </div>
 
-            <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="col-md-4 co<div class="container">l-sm-4 col-xs-12">
                 <div class="info-box bg-white ">
                      <h4><i class="fa fa-bar-chart-o"></i> </h4>
-                    <h4> BUY OR SELL ORDERS</h4>
-                    <p class="intro"> You can now use 51capitalcrypto.com platform to buy or sell your currecy </p>
+                    <h4> EXCHANGE BOOMTOKEN</h4>
+                    <p class="intro"> Earn 1% of your deposit amount each day. Exchange token to other currencies. </p>
                 </div>
             </div>
 
         </div>
     </div>
-
+ -->
 
     <div class="container">
         <div class="row">
@@ -80,10 +80,10 @@
                             <div class="col-xs-12">
                                 <div class="form-group {{ $errors->has('gender')? 'has-error':'' }}">
                                     <select id="gender" name="gender" class="form-control select2">
-                                        <option value="">Select Gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Fe-Male</option>
-                                        <option value="third_gender">Third Gender</option>
+                                        <option value="">Select Role</option>
+                                        <option value="male">Admin</option>
+                                        <option value="female">Normal User</option>
+                                        <!-- <option value="third_gender">Third Gender</option> -->
                                     </select>
                                     {!! $errors->has('gender')? '<p class="help-block">'.$errors->first('gender').'</p>':'' !!}
 
@@ -91,19 +91,19 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group {{ $errors->has('country')? 'has-error':'' }}">
-                                    <select id="country" name="country" class="form-control select2">
-                                        <option value="">@lang('app.select_a_country')</option>
-                                        @foreach($countries as $country)
-                                            <option value="{{ $country->id }}" {{ old('country') == $country->id ? 'selected' :'' }}>{{ $country->country_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    {!! $errors->has('country')? '<p class="help-block">'.$errors->first('country').'</p>':'' !!}
+                        
+                        <legend>Upload profile picture</legend>
+                        <div class="file-upload-wrap">
+                                    <label>
+                                        <input type="file" name="images" id="images" style="display: none;" />
+                                        <i class="fa fa-cloud-upload"></i>
+                                        <p>Upload profile picture</p>
+
+                                        <div class="progress" style="display: none;"></div>
+
+                                    </label>
                                 </div>
-                            </div>
-                        </div>
+                                <p class="text-info"> (Formats accepted are png and jpeg)</p>
 
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-6">

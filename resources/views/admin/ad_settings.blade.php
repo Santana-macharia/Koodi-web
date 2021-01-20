@@ -4,25 +4,53 @@
 
 @section('main')
 
-    <div class="container">
+<div class="container">
 
-        <div id="wrapper">
+    <div id="wrapper">
 
-            @include('admin.sidebar_menu')
+        @include('admin.sidebar_menu')
 
-            <div id="page-wrapper">
-                @if( ! empty($title))
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <h1 class="page-header"> {{ $title }}  </h1>
-                        </div> <!-- /.col-lg-12 -->
-                    </div> <!-- /.row -->
-                @endif
+        <div id="page-wrapper">
+            @if( ! empty($title))
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"> {{ $title }}  </h1>
+                </div> <!-- /.col-lg-12 -->
+            </div> <!-- /.row -->
+            @endif
 
-                <div class="row">
-                    <div class="col-md-10 col-xs-12">
+            <div class="row">
+                <div class="col-md-10 col-xs-12">
 
-                        <form action="{{route('save_settings')}}" class="form-horizontal" method="post" enctype="multipart/form-data"> @csrf
+                 <div class="col-sm-offset-4 col-sm-8">
+
+                    <?php
+
+                    $now        = Carbon\Carbon::now();
+                    $created    = date('Y-m-d H:s:i', strtotime($now));  
+                    $next_run   = get_option('next_run');
+                    $next_run   = Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $next_run);
+                    $created    = Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $created);
+        
+                 $diff_in_hours = $created->diffInHours($next_run, false);
+
+                   // echo $diff_in_hours;
+
+                    ?>
+                    @if($diff_in_hours<='0')
+                    <p>Passed <strong>{{ $diff_in_hours }} hours</strong></p>
+                    <a href="{{ route('add-earnings')}}"  class="btn btn-danger">Run Earnings now</a>
+
+                    @else
+                     <p>Hours remaining before next run <strong>{{ $diff_in_hours }} hours</strong></p>
+                    @endif
+                </div>
+
+                <hr>
+
+
+                <form action="{{route('save_settings')}}" class="form-horizontal" method="post" enctype="multipart/form-data"> @csrf
+                    <div >
                         <div class="form-group {{ $errors->has('ads_moderation')? 'has-error':'' }}">
                             <label for="ads_moderation" class="col-sm-4 control-label">@lang('app.ads_moderation')</label>
                             <div class="col-sm-8">
@@ -58,42 +86,54 @@
                             </div>
                         </div>
 
+                    </div>
 
+                    <div class="set_pricing_wrap" style="display: {{ get_option('ads_price_plan') == 'all_ads_free' ? 'none':'block' }};">
 
-                        <div class="set_pricing_wrap" style="display: {{ get_option('ads_price_plan') == 'all_ads_free' ? 'none':'block' }};">
-
-                            <div id="regular_ads_price_wrap" class="form-group {{ $errors->has('regular_ads_price')? 'has-error':'' }}" style="display: {{ get_option('ads_price_plan') == 'regular_ads_free_premium_paid' ? 'none':'block' }};">
-                                <label for="regular_ads_price" class="col-sm-4 control-label">@lang('app.regular_ads_price')</label>
-                                <div class="col-sm-8">
-                                    <input type="number" min="1" class="form-control" id="regular_ads_price" value="{{ get_option('regular_ads_price') }}" name="regular_ads_price" placeholder="@lang('app.regular_ads_price')">
-                                    {!! $errors->has('regular_ads_price')? '<p class="help-block">'.$errors->first('regular_ads_price').'</p>':'' !!}
-                                    <p class="text-info"> @lang('app.regular_ads_price_help_text')</p>
-                                </div>
+                        <div id="regular_ads_price_wrap" class="form-group {{ $errors->has('regular_ads_price')? 'has-error':'' }}" style="display: {{ get_option('ads_price_plan') == 'regular_ads_free_premium_paid' ? 'none':'block' }};">
+                            <label for="regular_ads_price" class="col-sm-4 control-label">@lang('app.regular_ads_price')</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="1" class="form-control" id="regular_ads_price" value="{{ get_option('regular_ads_price') }}" name="regular_ads_price" placeholder="@lang('app.regular_ads_price')">
+                                {!! $errors->has('regular_ads_price')? '<p class="help-block">'.$errors->first('regular_ads_price').'</p>':'' !!}
+                      <!--           <p class="text-info"> @lang('app.regular_ads_price_help_text')</p> -->
                             </div>
-
-                            <div id="premium_ads_price_wrap" class="form-group {{ $errors->has('premium_ads_price')? 'has-error':'' }}">
-                                <label for="premium_ads_price" class="col-sm-4 control-label">@lang('app.premium_ads_price')</label>
-                                <div class="col-sm-8">
-                                    <input type="number" min="1"  class="form-control"  id="premium_ads_price" value="{{ get_option('premium_ads_price') }}" name="premium_ads_price" placeholder="@lang('app.premium_ads_price')">
-                                    {!! $errors->has('premium_ads_price')? '<p class="help-block">'.$errors->first('premium_ads_price').'</p>':'' !!}
-                                    <p class="text-info"> @lang('app.premium_ads_price_help_text')</p>
-                                </div>
-                            </div>
-
-                            <div id="urgent_ads_price_wrap" class="form-group {{ $errors->has('urgent_ads_price')? 'has-error':'' }}">
-                                <label for="urgent_ads_price" class="col-sm-4 control-label">@lang('app.urgent_ads_price')</label>
-                                <div class="col-sm-8">
-                                    <input type="number" min="1"  class="form-control"  id="urgent_ads_price" value="{{ get_option('urgent_ads_price') }}" name="urgent_ads_price" placeholder="@lang('app.urgent_ads_price')">
-                                    {!! $errors->has('urgent_ads_price')? '<p class="help-block">'.$errors->first('urgent_ads_price').'</p>':'' !!}
-                                    <p class="text-info"> @lang('app.urgent_ads_price_help_text')</p>
-                                </div>
-                            </div>
-
                         </div>
 
+                        <div id="premium_ads_price_wrap" class="form-group {{ $errors->has('premium_ads_price')? 'has-error':'' }}">
+                            <label for="premium_ads_price" class="col-sm-4 control-label">Pessacoin exchange Rate($)</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="1"  class="form-control"  id="premium_ads_price" value="{{ get_option('premium_ads_price') }}" name="premium_ads_price" placeholder="@lang('app.premium_ads_price')">
+                                {!! $errors->has('premium_ads_price')? '<p class="help-block">'.$errors->first('premium_ads_price').'</p>':'' !!}
+                        <!--         <p class="text-info"> @lang('app.premium_ads_price_help_text')</p> -->
+                            </div>
+                        </div>
 
-                        <hr />
+                        <div id="urgent_ads_price_wrap" class="form-group {{ $errors->has('urgent_ads_price')? 'has-error':'' }}">
+                            <label for="urgent_ads_price" class="col-sm-4 control-label">Pessacoin @lang('app.urgent_ads_price') ($)</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="1"  class="form-control"  id="urgent_ads_price" value="{{ get_option('urgent_ads_price') }}" name="urgent_ads_price" placeholder="@lang('app.urgent_ads_price')">
+                                {!! $errors->has('urgent_ads_price')? '<p class="help-block">'.$errors->first('urgent_ads_price').'</p>':'' !!}
+                             <!--    <p class="text-info"> @lang('app.urgent_ads_price_help_text')</p> -->
+                            </div>
+                        </div>
 
+                        <div id="urgent_ads_price_wrap" class="form-group {{ $errors->has('urgent_ads_price')? 'has-error':'' }}">
+                            <label for="urgent_ads_price" class="col-sm-4 control-label">Active earning</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="0"  class="form-control"  id="urgent_ads_price" value="{{ get_option('level') }}" name="level" placeholder="earning level">
+                                {!! $errors->has('level')? '<p class="help-block">earning level</p>':'' !!}
+                                <br>
+                                <p class="text-info"> 0 for adding earning for all users(Monday to Thursday)</p>
+                                <p class="text-info"> 1 for adding earning for first registered users(Friday)</p>
+                                <p class="text-info"> 3 for adding earning for (vinod Rabadia-122)</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <hr />
+                    <div style="display: none">
                         <div class="form-group {{ $errors->has('number_of_urgent_ads_in_home')? 'has-error':'' }}">
                             <label for="number_of_urgent_ads_in_home" class="col-sm-4 control-label">@lang('app.number_of_urgent_ads_in_home')</label>
                             <div class="col-sm-8">
@@ -190,63 +230,64 @@
 
 
                         <hr />
-
-                        <div class="form-group">
-                            <div class="col-sm-offset-4 col-sm-8">
-                                <button type="submit" id="settings_save_btn" class="btn btn-primary">@lang('app.save_settings')</button>
-                            </div>
-                        </div>
-
-                        </form>
                     </div>
-                </div>
 
-            </div>   <!-- /#page-wrapper -->
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <button type="submit" id="settings_save_btn" class="btn btn-primary">@lang('app.save_settings')</button>
+                        </div>
+                    </div>
 
-        </div>   <!-- /#wrapper -->
+                </form>
+            </div>
+        </div>
+
+    </div>   <!-- /#page-wrapper -->
+
+</div>   <!-- /#wrapper -->
 
 
-    </div> <!-- /#container -->
+</div> <!-- /#container -->
 @endsection
 
 
 @section('page-js')
-    <script>
-        $(function(){
+<script>
+    $(function(){
 
-            $('input[type="checkbox"], input[type="radio"]').click(function(){
-                var input_name = $(this).attr('name');
-                var input_value = 0;
-                if ($(this).prop('checked')){
-                    input_value = $(this).val();
-                }
-                $.ajax({
-                    url : '{{ route('save_settings') }}',
-                    type: "POST",
-                    data: { [input_name]: input_value, '_token': '{{ csrf_token() }}' },
-                });
+        $('input[type="checkbox"], input[type="radio"]').click(function(){
+            var input_name = $(this).attr('name');
+            var input_value = 0;
+            if ($(this).prop('checked')){
+                input_value = $(this).val();
+            }
+            $.ajax({
+                url : '{{ route('save_settings') }}',
+                type: "POST",
+                data: { [input_name]: input_value, '_token': '{{ csrf_token() }}' },
             });
+        });
 
 
-            $('input[name="ads_price_plan"]').click(function(){
-                var price_plan = $(this).val();
+        $('input[name="ads_price_plan"]').click(function(){
+            var price_plan = $(this).val();
 
-                if (price_plan == 'all_ads_paid'){
-                    $('.set_pricing_wrap').slideDown('slow');
-                    $('#regular_ads_price_wrap').show();
-                }else if(price_plan == 'regular_ads_free_premium_paid'){
-                    $('#regular_ads_price_wrap').hide();
-                    $('.set_pricing_wrap').slideDown('slow');
-                } else {
-                    $('.set_pricing_wrap').slideUp();
-                }
+            if (price_plan == 'all_ads_paid'){
+                $('.set_pricing_wrap').slideDown('slow');
+                $('#regular_ads_price_wrap').show();
+            }else if(price_plan == 'regular_ads_free_premium_paid'){
+                $('#regular_ads_price_wrap').hide();
+                $('.set_pricing_wrap').slideDown('slow');
+            } else {
+                $('.set_pricing_wrap').slideUp();
+            }
 
-            });
+        });
 
             /**
              * Send settings option value to server
              */
-            $('#settings_save_btn').click(function(e){
+             $('#settings_save_btn').click(function(e){
                 e.preventDefault();
 
                 var this_btn = $(this);
@@ -266,6 +307,6 @@
                 });
             });
 
-        });
-    </script>
-@endsection
+         });
+     </script>
+     @endsection

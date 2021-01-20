@@ -1,0 +1,8 @@
+[2020-11-11 07:50:12] local.ERROR: Maximum execution time of 30 seconds exceeded {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Maximum execution time of 30 seconds exceeded at C:\\xampp\\htdocs\\awasam\\boomcoin\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Preferences.php:16)
+[stacktrace]
+#0 {main}
+"} 
+[2020-11-11 07:50:17] local.ERROR: Maximum execution time of 30 seconds exceeded {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 1): Maximum execution time of 30 seconds exceeded at C:\\xampp\\htdocs\\awasam\\boomcoin\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php:389)
+[stacktrace]
+#0 {main}
+"} 

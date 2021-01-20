@@ -88,6 +88,7 @@
                         <label>PessaCoins Amount to sell</label>
                         <input type="number" name="coin_amount" id="amount" class="form-control" min="0.02" step="any" max="{{ $logged_user->crypto_wallet }}" required onchange ="calculate(this.form);">
                         <input type="hidden" name="rate" id="rate" class="form-control" disabled="" value="{{ get_option('premium_ads_price')  }}">
+                  
                     </div>
             <div style="display: none;">
 
@@ -137,6 +138,7 @@
                     <div class="form-group">
                       <input type="text" name = display class="form-control" disabled>
                       <input type="hidden" name = total class="form-control">
+                        <input type="hidden" value="sell" name = payment_status class="form-control">
                       <hr>
                       <button type="submit" class="btn btn-info">Proceed</button> 
                   </div>

@@ -68,23 +68,9 @@
                 </div> -->
 
                   <div class="col-lg-12 col-md-12">
-                <!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-  <div class="tradingview-widget-container__widget"></div>
-  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/cryptocurrencies/prices-all/" rel="noopener" target="_blank"><span class="blue-text">Cryptocurrency Markets</span></a> by 51Capital</div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
-  {
-  "width": 1000,
-  "height": 490,
-  "defaultColumn": "overview",
-  "screener_type": "crypto_mkt",
-  "displayCurrency": "USD",
-  "colorTheme": "dark",
-  "locale": "en"
-}
-  </script>
-</div>
-<!-- TradingView Widget END -->
+          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 </div>
 
                 @if($ten_contact_messages)
@@ -230,4 +216,46 @@
     <!-- /#wrapper -->
 
     </div> <!-- /#container -->
+@endsection
+
+@section('page-js')
+   <script>
+window.onload = function() {
+ 
+var dataPoints = [];
+ 
+var chart = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: true,
+    theme: "light2",
+    zoomEnabled: true,
+    title: {
+        text: "Pessacoin Price - 2020"
+    },
+    axisY: {
+        title: "Price in USD",
+        titleFontSize: 24,
+        prefix: "$"
+    },
+    data: [{
+        type: "line",
+        yValueFormatString: "$#,##0.00",
+        dataPoints: dataPoints
+    }]
+});
+ 
+function addData(data) {
+    var dps = data.price_usd;
+    for (var i = 0; i < dps.length; i++) {
+        dataPoints.push({
+            x: new Date(dps[i][1]),
+            y: 50
+        });
+    }
+    chart.render();
+}
+ 
+$.getJSON("https://canvasjs.com/data/gallery/php/bitcoin-price.json", addData);
+ 
+}
+</script>
 @endsection

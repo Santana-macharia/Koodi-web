@@ -88,6 +88,7 @@
                         <label>PessaCoins Amount to exchange from your earnings</label>
                         <input type="number"  name="coin_amount" id="amount" class="form-control" min="0.5" step="any" max="{{$logged_user->earnings}}" required onchange ="calculate(this.form);">
                         <input type="hidden" name="rate" id="rate" class="form-control" disabled="" value="{{ get_option('premium_ads_price')  }}">
+              
                     </div>
             <div style="display: none;">
 
@@ -108,13 +109,7 @@
                         </div>
 
 
-                        <div class="form-group {{ $errors->has('seller_phone')? 'has-error':'' }}">
-                            <label for="ad_title" class="col-sm-4 control-label">@lang('app.seller_phone')</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="seller_phone" value="{{ old('seller_phone') ? old('seller_phone') : $lUser->phone }}" name="seller_phone" placeholder="@lang('app.seller_phone')">
-                                {!! $errors->has('seller_phone')? '<p class="help-block">'.$errors->first('seller_phone').'</p>':'' !!}
-                            </div>
-                        </div>
+                      
 
                         </div>
 
@@ -134,9 +129,18 @@
                         {!! $errors->has('payment_method')? '<p class="help-block">'.$errors->first('payment_method').'</p>':'' !!}
                     </div>
 
+                      <div class="form-group {{ $errors->has('seller_phone')? 'has-error':'' }}">
+                            <label>Mpesa Number</label>
+                          
+                                <input type="text" class="form-control" id="seller_phone" value="{{ old('seller_phone') ? old('seller_phone') : $lUser->phone }}" name="seller_phone" placeholder="Mpesa number">
+                                {!! $errors->has('seller_phone')? '<p class="help-block">'.$errors->first('seller_phone').'</p>':'' !!}
+                         
+                        </div>
+
                     <div class="form-group">
                       <input type="text" name = display class="form-control" disabled>
                       <input type="hidden" name = total class="form-control">
+                      <input type="hidden" value="exchange" name="payment_status" class="form-control">
                       <hr>
                       <button type="submit" class="btn btn-info">Proceed</button> 
                   </div>

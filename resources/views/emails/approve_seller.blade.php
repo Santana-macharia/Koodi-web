@@ -15,7 +15,7 @@
 <strong>Email: </strong>  {{$email}}<br><br>
 <strong>Amount: </strong>  {{$amount}}<br><br>
 <p>
-    {{$amount_funded}} will be sent to your {{ $payment_method }} account within the next 24Hrs.
+    KSH {{$amount_funded}} will be sent to your {{ $payment_method }} account within the next 24Hrs.
 </p>
 <p>
 	Do not hesitate to contact our Customer Support team 24/7, if you have any problems.

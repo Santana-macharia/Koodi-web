@@ -294,6 +294,37 @@ public function proceedPayment(Request $request){
 
        }
 
+             //admin send payments
+public function sendPayment(Request $request){
+          $user = Auth::user();
+      
+          //Insert checkout Logic
+
+                $transaction_id = 'tran_'.time().str_random(6);
+                // get unique recharge transaction id
+                while( ( Payment::whereLocalTransactionId($transaction_id)->count() ) > 0) {
+                    $transaction_id = 'reid'.time().str_random(5);
+                }
+                $transaction_id = strtoupper($transaction_id);
+
+                $currency = get_option('currency_sign');
+                $payments_data = [
+                    'ad_id'     => $request->ad_id,
+                    'user_id'   => $user->id,
+                    'amount'    => $request->ad_price,
+                    'payment_method'    => 'mpesa',
+                    'payment_status'    => $request->payment_status,
+                    'status'    => 'initial',
+                    'currency'  => $currency,
+                    'local_transaction_id'  => $transaction_id
+                ];
+                $created_payment = Payment::create($payments_data);
+
+                return redirect(route('send_checkout', $created_payment->local_transaction_id));
+
+       }
+
+
 
 
       public function paymentApproval($id){
@@ -302,6 +333,7 @@ public function proceedPayment(Request $request){
         $user_id =  $payment->user_id;
         $amount  =  $payment->amount;
         $ad_id   =  $payment->ad_id;
+        $payment_status = $payment->payment_status;
 
         //find id for seller
         $ad = Ad::find($ad_id);
@@ -309,11 +341,10 @@ public function proceedPayment(Request $request){
         $seller_email = $ad->seller_email;
         $seller_name = $ad->seller_name;
         $payment_method = $ad->payment_method;
+  // buy main logic
+        if ($payment_status=='buy') {
+          # code...
 
-
-
-
-    //main logic
         $admin = User::find($seller_id);
         $user_amount = $admin->crypto_wallet;
       
@@ -397,6 +428,100 @@ public function proceedPayment(Request $request){
           else{
            return back()->withInput()->with('error', trans('app.error_msg'));
          }
+
+
+        }
+
+// exchange main logic
+    if ($payment_status=='exchange') {
+
+         
+        $admin = User::find($seller_id);
+        $user_amount = $admin->earnings;
+      
+        $current_rate = get_option('urgent_ads_price');
+        $sell_rate = get_option('urgent_ads_price');
+
+        $coin = $amount/$sell_rate;
+        $user_amount = $user_amount-$coin;
+        $amount_funded = $coin*$sell_rate*110;
+
+
+    //new admin coin
+       $admin->earnings -= $coin;;
+       $admin->save();
+
+     
+
+      if ($admin){
+               //update ststus
+        $payment->status = "success";
+        $payment->save();
+
+        $name = $admin->name;
+        $email = $admin->email;
+
+          $ad->status = 2;
+          $ad->save();
+      
+
+
+
+
+
+            $sname = $coin.' PessaCoins added to your wallet';
+            $data=array(
+                'name' =>$name,
+                'email'=>$email,
+                'sname'=>$sname,
+                'amount'=>$coin,
+
+            );
+
+
+        //send email to buyer
+            Mail::send('emails.approval',$data, function($message) use ($data){
+              $message->to($data['email']);
+              $message->subject($data['sname']);
+
+          });
+
+             $sellersubject = $coin.' PessaCoin deduted from your earning wallet';
+             $data=array(
+                'name' =>$seller_name,
+                'email'=>$seller_email,
+                'sname'=>$sellersubject,
+                'amount'=>$coin,
+                'payment_method' =>$payment_method,
+                'amount_funded'  =>$amount_funded,
+
+            );
+
+            //send email to the seller
+            Mail::send('emails.approve_seller',$data, function($message) use ($data){
+              $message->to($data['email']);
+              $message->subject($data['sname']);
+
+          });
+
+
+
+         return redirect(route('dashboard'))->with('success', trans('app.buy_created_msg'));
+
+           
+
+          }
+
+          else{
+           return back()->withInput()->with('error', trans('app.error_msg'));
+         }
+
+        }
+
+
+
+
+  
 
        
 
@@ -487,6 +612,23 @@ public function proceedPayment(Request $request){
 
     }
 
+    public function boomwallet(){
+       
+      $title = trans('app.wallet');
+      $payment_method = 'paypal';
+
+      $user = Auth::user();
+      if ($user->is_admin()){
+          $payments = Payment::select('id','ad_id', 'user_id', 'amount','payment_method', 'status','local_transaction_id', 'created_at')->with('ad', 'user')->orderBy('id', 'desc')->paginate(20);
+      }else{
+          $payments = Payment::select('id','ad_id', 'user_id', 'amount','payment_method', 'status','local_transaction_id', 'created_at')->whereUserId($user->id)->with('ad', 'user')->orderBy('id', 'desc')->paginate(20);
+      }
+
+
+
+      return view('admin.boomwallet');
+  }
+
 
      public function wallet(){
        
@@ -565,6 +707,7 @@ public function proceedPayment(Request $request){
                     'user_id'   => $user->id,
                     'amount'    => $request->deposit_amount,
                     'payment_method'    => $request->payment_method,
+                    'payment_status'    => $request->payment_status,
                     'status'    => 'initial',
                     'currency'  => $currency,
                     'local_transaction_id'  => $transaction_id
@@ -573,6 +716,50 @@ public function proceedPayment(Request $request){
 
                 return redirect(route('payment_checkout', $created_payment->local_transaction_id));
     }
+ 
+// deduct pessacoin
+    public function songAmount(Request $request){
+
+
+      $user_id       = $request->user_id;
+      $ad_id         = $request->ad_id;
+
+      $user    = User::find($user_id);
+      $crypto_wallet = $user->crypto_wallet;
+      $crypto_wallet = $crypto_wallet-1;
+
+      $user->crypto_wallet = $crypto_wallet;
+      $user->save();
+
+
+ return back()->withInput()->with('success', trans('update saved'));
+
+   
+    }
+
+
+    public function updateAmount(Request $request){
+
+
+      $user_id       = $request->user_id;
+      $crypto_wallet = $request->crypto_wallet;
+      $earnings      = $request->earnings;
+      $days          = $request->days;
+
+      $user    = User::find($user_id);
+
+        $user->crypto_wallet = $crypto_wallet;
+        $user->earnings      = $earnings;
+        $user->days          = $days;
+        $user->save();
+
+
+ return back()->withInput()->with('success', trans('update saved'));
+
+   
+    }
+
+
 
     public function paymentInfo($tran_id){
       $payment = Payment::where('local_transaction_id', $tran_id)->first() ;
@@ -595,6 +782,16 @@ public function proceedPayment(Request $request){
       $title = trans('app.checkout');
       if ($payment){
         return view('admin.checkout', compact('title','payment','user'));
+      }
+      return view('admin.error.invalid_transaction', compact('title','payment','user'));
+    }
+
+    public function checkoutSend($transaction_id){
+      $user       =  User::find(Auth::id());
+      $payment = Payment::whereLocalTransactionId($transaction_id)->whereStatus('initial')->first();
+      $title = trans('app.checkout');
+      if ($payment){
+        return view('admin.send_checkout', compact('title','payment','user'));
       }
       return view('admin.error.invalid_transaction', compact('title','payment','user'));
     }

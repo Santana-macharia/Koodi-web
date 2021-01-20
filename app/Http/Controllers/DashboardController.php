@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Ad;
+use App\Earning;
 use App\Contact_query;
 use App\Payment;
 use App\Report_ad;
 use App\User;
+use App\Option;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -45,33 +48,75 @@ class DashboardController extends Controller
         return view('admin.dashboard', compact('approved_ads', 'pending_ads', 'blocked_ads', 'total_users', 'total_reports', 'total_payments', 'total_payments_amount', 'ten_contact_messages', 'reports'));
     }
 
-       public function earnings()
-    {
-     $user = Auth::user();
+    public function earnings()
+       {
+       $user = Auth::user();
+       $level = get_option('level');
 
-         if ($user->is_admin()){
-         $users = User::all();
-
-           foreach($users as $user){
-             $crypto_wallet = $user->crypto_wallet;
-               
-             $earnings = $crypto_wallet* 0.01;
-
-                $user->earnings += $earnings;
-             $user->save();
-               }
-              }
-    
-      
-           
-           }
-
-
-    public function logout(){
-        if (Auth::check()){
-            Auth::logout();
+       if ($user->is_admin()){
+        if ($level=='0') {
+          $users = User::all();
         }
 
-        return redirect(route('login'));
+         if ($level=='1') {
+          $users = User::whereLevel($level)->get();
+        }
+
+         if ($level=='2') {
+        $users = User::whereLevel($level)->get();
+        }
+
+        if ($level=='3') {
+             $users = User::whereId(122)->get();
+        }
+    
+     //update earnings
+
+           foreach($users as $user){
+
+               $crypto_wallet = $user->crypto_wallet;
+               $user_id = $user->id;
+               
+               $earnings = $crypto_wallet* 0.01;
+               $days = 1;
+
+
+               $user->earnings += $earnings;
+               $user->days     += $days;
+               $user->save();
+                  
+                  }
+
+      //update next run
+
+        $user = Auth::user();
+        $created    = new Carbon($user->updated_at);
+        $now        = Carbon::now();
+        $created    = date('Y-m-d H:s:i', strtotime($created));  
+        $next_run   = date("Y-m-d H:s:i", strtotime("24 hour"));
+
+        $next_run   = Carbon::createFromFormat('Y-m-d H:s:i', $next_run);
+        $created = Carbon::createFromFormat('Y-m-d H:s:i', $created);
+        //$diff_in_hours = $created->diffInHours($next_run, false);
+        //$next_run = Option::find(108);
+        $option = Option::whereId('108')->first();
+        $option->option_value = $next_run;
+        $option->save();
+
+      return redirect(route('dashboard'))->with('success', 'Earning updated');
+      
+}
+    
+
+
+}
+
+
+public function logout(){
+    if (Auth::check()){
+        Auth::logout();
     }
+
+    return redirect(route('login'));
+}
 }

@@ -32,6 +32,11 @@
                                         </td>
 
                                          <td>
+                                            <h5><a href="#" target="_blank">{{ $ad->seller_name }}</a> </h5>
+                                          
+                                        </td>
+
+                                         <td>
                                             <h5><a href="{{ route('single_ad', $ad->slug) }}" target="_blank"></a> ({!! $ad->price !!} Pessacoin)</h5>
                                            
                                         </td>

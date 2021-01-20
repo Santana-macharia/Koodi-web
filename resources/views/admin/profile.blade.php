@@ -33,8 +33,12 @@
                                 <td>{{ $user->name }}</td>
                             </tr>
                             <tr>
-                                <th>@lang('app.user_name')</th>
-                                <td>{{ $user->user_name }}</td>
+                                <th>PessaCoins</th>
+                                <td>{{ $user->crypto_wallet }}</td>
+                            </tr>
+                              <tr>
+                                <th>Earning PessaCoins</th>
+                                <td>{{ $user->earnings  }}</td>
                             </tr>
                             <tr>
                                 <th>@lang('app.email')</th>
